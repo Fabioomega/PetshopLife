@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <title>Create new user</title>
+</head>
+
+<body>
+    <form action="/users" method="post">
+        <label for="username">Name:</label>
+        <input id="username" name="username">
+        <br>
+        <label for="is_admin">Is admin:</label>
+        <input id="is_admin" name="privilege" type="checkbox" value="admin">
+        <br>
+        <button>Send</button>
+    </form>
+</body>
+
+</html>
