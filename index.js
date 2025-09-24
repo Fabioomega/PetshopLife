@@ -16,7 +16,7 @@ app.use("/slots", slotsRouter);
 
 // rota inicial
 app.get('/', (req, resp) => {
-    resp.sendFile(__dirname + '/public/user_selection.html');
+    resp.sendFile(__dirname + '/public/html/user_selection.html');
 });
 
 
