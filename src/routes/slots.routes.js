@@ -71,4 +71,25 @@ router.post('/seed', async (req, resp) => {
   }
 });
 
+router.get('/', async (req, resp) => {
+    try {
+        const todosHorarios = await Slot.find({}).lean();
+
+        const todosHorariosAgrupados = todosHorarios.reduce((acc, slot) => {
+            if (!acc[slot.dayOfWeek]) {
+                acc[slot.dayOfWeek] = [];
+            }
+
+            acc[slot.dayOfWeek].push({id:slot._id, time: slot.time, capacity: slot.capacity });
+            return acc;
+        }, {});
+
+        resp.status(200).json(todosHorariosAgrupados);
+        
+    } catch (error) {
+        console.error(error);
+        resp.status(500).json({ error: "Erro ao buscar slots" });
+    }
+});
+
 module.exports = router;
