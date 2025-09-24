@@ -45,4 +45,30 @@ router.delete("/", async (req, res) => {
   }
 });
 
+router.post('/seed', async (req, resp) => {
+  try {
+    const dias = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    const horarios = ["08:00", "09:00", "10:00", "11:00", "14:00", "15:00", "16:00", "17:00"];
+
+    const docs = [];
+
+    for (let dayOfWeek of dias) {
+      for (let time of horarios) {
+        const capacity = Math.floor(Math.random() * 4) + 1;
+        docs.push({ dayOfWeek, time, capacity });
+      }
+    }
+
+    const inseridos = await Slot.insertMany(docs);
+
+    resp.status(201).json({
+      message: 'Slots gerados com sucesso!',
+      createdCount: inseridos.length
+    });
+  } catch (error) {
+    console.error(error);
+    resp.status(500).json({ error: 'Erro ao gerar os slots.' });
+  }
+});
+
 module.exports = router;
