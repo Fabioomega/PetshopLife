@@ -1,8 +1,8 @@
 const mongoose = require('../config/connection');
 
 const slot_shema = new mongoose.Schema({
-    slotId: ObjectId,
-    userId: ObjectId,
+    slotId: { type: mongoose.Schema.Types.ObjectId, ref: 'Slot' },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     costumerName: String,
     createdAt: { type: Date, default: Date.now }
 });
