@@ -3,14 +3,16 @@ const express = require("express");
 
 const app = express();
 
-const usersRouter = require('./src/routes/users.routes');
-app.use("/users", usersRouter);
-
 // midlewares globais
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 
+const usersRouter = require('./src/routes/users.routes');
+const slotsRouter = require('./src/routes/slots.routes');
+
+app.use("/users", usersRouter);
+app.use("/slots", slotsRouter);
 
 // rota inicial
 app.get('/', (req, resp) => {
@@ -18,6 +20,6 @@ app.get('/', (req, resp) => {
 });
 
 
-app.listen(8000, function () {
-    console.log("Servidor rodando na porta 8000...");
+app.listen(8080, function () {
+    console.log("Servidor rodando na porta 8080...");
 });
