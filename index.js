@@ -10,9 +10,11 @@ app.use(express.static(__dirname + "/public"));
 
 const usersRouter = require('./src/routes/users.routes');
 const slotsRouter = require('./src/routes/slots.routes');
+const bookingsRouter = require('./src/routes/bookings.routes');
 
 app.use("/users", usersRouter);
 app.use("/slots", slotsRouter);
+app.use("/bookings", bookingsRouter);
 
 // rota inicial
 app.get('/', (req, resp) => {
