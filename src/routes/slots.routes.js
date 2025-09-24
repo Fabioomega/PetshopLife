@@ -71,6 +71,125 @@ router.post('/seed', async (req, resp) => {
   }
 });
 
+/**
+ * @openapi
+ * /slots:
+ *   post:
+ *     tags: [Slots]
+ *     summary: Cria um novo slot de atendimento
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [dayOfWeek, time, capacity]
+ *             properties:
+ *               dayOfWeek:
+ *                 type: string
+ *                 example: Monday
+ *               time:
+ *                 type: string
+ *                 example: "18:00"
+ *               capacity:
+ *                 type: integer
+ *                 example: 3
+ *     responses:
+ *       201:
+ *         description: Slot criado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Slot criado com sucesso!
+ *                 slot:
+ *                   $ref: '#/components/schemas/Slot'
+ *       400:
+ *         description: Campos obrigatórios não preenchidos
+ *       500:
+ *         description: Erro ao processar a solicitação
+ */
+
+/**
+ * @openapi
+ * /slots:
+ *   delete:
+ *     tags: [Slots]
+ *     summary: Deleta todos os slots
+ *     responses:
+ *       200:
+ *         description: Remoção concluída
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/DeleteResponse'
+ *       500:
+ *         description: Erro ao deletar os slots
+ */
+
+/**
+ * @openapi
+ * /slots/seed:
+ *   post:
+ *     tags: [Slots]
+ *     summary: Gera slots automaticamente (segunda a sexta; 08–11 e 14–17) com capacidade aleatória 1..4
+ *     responses:
+ *       201:
+ *         description: Slots gerados
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SeedResponse'
+ *       500:
+ *         description: Erro ao gerar os slots
+ */
+
+/**
+ * @openapi
+ * /slots/{dayOfWeek}:
+ *   get:
+ *     tags: [Slots]
+ *     summary: Lista os slots de um dia específico
+ *     parameters:
+ *       - name: dayOfWeek
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: Monday
+ *     responses:
+ *       200:
+ *         description: Array de slots do dia
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Slot'
+ *       500:
+ *         description: Erro ao buscar slots
+ */
+
+/**
+ * @openapi
+ * /slots:
+ *   get:
+ *     tags: [Slots]
+ *     summary: Lista todos os slots agrupados por dia da semana
+ *     responses:
+ *       200:
+ *         description: Objeto com chaves por dia (Monday..Friday) e arrays de horários
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SlotGrouped'
+ *       500:
+ *         description: Erro ao buscar slots
+ */
+
 router.get('/', async (req, resp) => {
     try {
         const todosHorarios = await Slot.find({}).lean();
