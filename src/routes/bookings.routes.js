@@ -66,4 +66,30 @@ router.post('/', async (req, resp) => {
         resp.status(500).json({ error: 'Erro ao processar a solicitação.' });
     }
 });
+
+router.get('/:userId', async (req, resp) => {
+    try {
+        const { userId } = req.params
+        const user = await User.findById(userId);
+        if (!user) {
+            resp.status(404).json({ error: 'Usuário não encontrado.' });
+            return;
+        }
+
+        const bookings = await Booking.find({ userId: userId }).populate('slotId', 'dayOfWeek time -_id').sort({ createdAt: -1 });
+
+        const resultado = bookings.map(booking => ({
+            dayOfWeek: booking.slotId.dayOfWeek,
+            time: booking.slotId.time,
+            costumerName: booking.costumerName,
+            createdAt: booking.createdAt
+        }));
+
+        resp.status(200).json(resultado);
+    } catch (error) {
+        console.error(error);
+        resp.status(500).json({ error: 'Erro ao buscar as reservas.' });
+    }
+});
+
 module.exports = router;
