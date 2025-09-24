@@ -92,4 +92,21 @@ router.get('/', async (req, resp) => {
     }
 });
 
+router.get('/:dayOfWeek', async (req, resp) => {
+    try {
+        const dayOfWeek = req.params.dayOfWeek;
+        const horariosDoDia = await Slot.find({ dayOfWeek: dayOfWeek }).lean();
+
+        if (horariosDoDia.length === 0) {
+            resp.status(404).json({ error: 'Nenhum slot encontrado para o dia especificado.' });
+            return;
+        }
+
+        resp.status(200).json(horariosDoDia);
+    } catch (error) {
+        console.error(error);
+        resp.status(500).json({ error: 'Erro ao buscar os slots.' });
+    }
+});
+
 module.exports = router;
