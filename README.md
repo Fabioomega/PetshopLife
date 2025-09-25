@@ -44,8 +44,12 @@ npm start
 ```
 petshoplife/
 ├─ public/                       # Front-end exposto (arquivos estáticos)
+|  ├─ booking.html
+|  ├─ index.html
+|  ├─ new_user.html
+|  ├─ slots.html
 │  ├─ user_selection.html
-│  ├─ new_user.html
+│  ├─ user.html
 │  └─ styles.css
 │
 ├─ src/
