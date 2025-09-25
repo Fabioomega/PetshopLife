@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Usuários</title>
+</head>
+<body>
+  <h1>Lista de Usuários</h1>
+  <button onclick="carregarUsuarios()">Carregar Usuários</button>
+  <ul id="user-list"></ul>
+
+  <script>
+    async function carregarUsuarios() {
+      const resp = await fetch("/users");
+      const data = await resp.json();
+
+      const list = document.getElementById("user-list");
+      list.innerHTML = "";
+
+      data.forEach(user => {
+        const li = document.createElement("li");
+        li.textContent = user.name || JSON.stringify(user);
+        list.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>

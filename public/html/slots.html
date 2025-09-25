@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Slots</title>
+</head>
+<body>
+  <h1>Lista de Slots</h1>
+  <button onclick="carregarSlots()">Carregar Slots</button>
+  <ul id="slot-list"></ul>
+
+  <script>
+    async function carregarSlots() {
+      const resp = await fetch("/slots");
+      const data = await resp.json();
+
+      const list = document.getElementById("slot-list");
+      list.innerHTML = "";
+
+      data.forEach(slot => {
+        const li = document.createElement("li");
+        li.textContent = `${slot.dayOfWeek} - ${slot.time} (capacidade: ${slot.capacity})`;
+        list.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
