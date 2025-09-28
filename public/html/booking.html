@@ -9,11 +9,16 @@
   <button onclick="listar_slots()">Listar slots(horários livres)</button>
   <ul id="slot-list"></ul>
 
+  <h1>Listar minha reserva</h1>
+  <input id="id_do_usuario_reserva" placeholder="ID do usuario">
+  <button onclick="minha_reserva()">Listar minha(s) reserva(s)</button>
+  <ul id="minha_reserva"></ul>
+
   
-  <h1>Criar Reserva</h1>
+  <h1>Criar reserva</h1>
   <input id="id_do_usuario" placeholder="ID do usuario">
-  <input id="dia_da_semana_reserva" placeholder="dia_da_semana">
-  <input id="horario_reserva" placeholder="horario_reserva">
+  <input id="dia_da_semana_reserva" placeholder="Dia da semana">
+  <input id="horario_reserva" placeholder="Horario">
   <button onclick="criar_reserva()">Reservar</button>
 
   <h1>Criar slots</h1>
@@ -28,7 +33,7 @@
       const resp = await fetch("/slots");
       const info = await resp.json();
 
-      console.log('info' + info);
+      // console.log('info' + info);
 
       const list = document.getElementById("slot-list");
       console.log('Elemento da lista:', list);
@@ -41,16 +46,41 @@
         slots.forEach(slot => { 
 
           const li = document.createElement("li");
-          li.textContent = `${dia_da_semana} - ${slot.time} (capacidade: ${slot.capacity}) id: ${slot.id}`;
+          li.textContent = `${dia_da_semana} - ${slot.time} (capacidade: ${slot.capacity})`;
           list.appendChild(li);
         })
       });
-      // alert('hi');
     }
   </script>
 
   <script>
-    async function criar_reserva(idDoUsuario, diaDaSemana, horario) {
+    async function minha_reserva() {
+      const id_do_usuario_reserva = document.getElementById("id_do_usuario_reserva").value;
+
+      // alert('id' + id_do_usuario_reserva);
+      const resp = await fetch(`/bookings/${id_do_usuario_reserva}`);
+      const info = await resp.json();
+      const list = document.getElementById("minha_reserva");
+      console.log('Elemento da lista:', list);
+      list.innerHTML = "";
+      
+      info.forEach(reserva => {
+        console.log('info ' + reserva);
+        
+        // const slots = info[dia_da_semana];
+
+        // slots.forEach(slot => { 
+
+          const li = document.createElement("li");
+          li.textContent = `Reserva do cliente: ${reserva.costumerName}, dia: ${reserva.dayOfWeek}, às: ${reserva.time}, registrado: ${reserva.createdAt}`;
+          list.appendChild(li);
+        // })
+      });
+    }
+  </script>
+
+  <script>
+    async function criar_reserva() {
       const id_do_usuario = document.getElementById("id_do_usuario").value;
       const dia_da_semana_reserva = document.getElementById("dia_da_semana_reserva").value;
       const horario_reserva = document.getElementById("horario_reserva").value;
