@@ -47,9 +47,8 @@ petshoplife/
 |  ├─ booking.html
 |  ├─ index.html
 |  ├─ new_user.html
-|  ├─ slots.html
+|  ├─ petshop.html
 │  ├─ user_selection.html
-│  ├─ user.html
 │  └─ styles.css
 │
 ├─ src/
