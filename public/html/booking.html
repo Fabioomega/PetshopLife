@@ -53,13 +53,13 @@
       const resultado = await resposta.json();
 
       // Verifica se a requisição falhou (status não foi 2xx)
-      if (resultado == []) {
+      if (resultado.lenght() === 0) {
         // Exibe a mensagem de erro específica vinda da API
         // console.error('Erro da API:', resultado);
         alert(`Ainda não temos reserva marcada`); // Ex: "Não tem reserva."
         return null;
       }
-      
+
       const list = document.getElementById("minha_reserva");
       console.log('Elemento da lista:', list);
       list.innerHTML = "";
