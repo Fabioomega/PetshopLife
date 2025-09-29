@@ -28,8 +28,8 @@ router.post('/', async (req, resp) => {
 });
 
 router.get('/list', async (req, resp) => {
-    let users = await User.find({}, "username -_id");
-    resp.send(users.map((user) => user.username));
+    let users = await User.find({});
+    resp.send(users.map((el) => el));
 });
 
 module.exports = router;

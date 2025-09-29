@@ -3,7 +3,7 @@ class Serializer {
         this.name = obj_name;
     }
 
-    save() {
+    save(data) {
         window.sessionStorage.setItem(this.name, JSON.stringify(data));
     }
 
