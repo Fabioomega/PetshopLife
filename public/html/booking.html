@@ -49,8 +49,8 @@
     async function minha_reserva() {
       const id_do_usuario_reserva = document.getElementById("id_do_usuario_reserva").value;
 
-      const resp = await fetch(`/bookings/${id_do_usuario_reserva}`);
-      const resultado = await resp.json();
+      const resposta = await fetch(`/bookings/${id_do_usuario_reserva}`);
+      const resultado = await resposta.json();
       const list = document.getElementById("minha_reserva");
       console.log('Elemento da lista:', list);
       list.innerHTML = "";
