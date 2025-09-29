@@ -49,24 +49,28 @@
     async function minha_reserva() {
       const id_do_usuario_reserva = document.getElementById("id_do_usuario_reserva").value;
 
-      // alert('id' + id_do_usuario_reserva);
-      const resp = await fetch(`/bookings/${id_do_usuario_reserva}`);
-      const info = await resp.json();
+      const resposta = await fetch(`/bookings/${id_do_usuario_reserva}`);
+      const resultado = await resposta.json();
+
+      // Verifica se a requisição falhou (status não foi 2xx)
+      if (resultado.length === 0) {
+        // Exibe a mensagem de erro específica vinda da API
+        // console.error('Erro da API:', resultado);
+        alert(`Ainda não temos reserva marcada`); // Ex: "Não tem reserva."
+        return null;
+      }
+
       const list = document.getElementById("minha_reserva");
       console.log('Elemento da lista:', list);
       list.innerHTML = "";
       
-      info.forEach(reserva => {
-        console.log('info ' + reserva);
+
+      resultado.forEach(reserva => {
+        console.log('resultado ' + reserva);
         
-        // const slots = info[dia_da_semana];
-
-        // slots.forEach(slot => { 
-
           const li = document.createElement("li");
           li.textContent = `Reserva do cliente: ${reserva.costumerName}, dia: ${reserva.dayOfWeek}, às: ${reserva.time}, registrado: ${reserva.createdAt}`;
           list.appendChild(li);
-        // })
       });
     }
 
@@ -107,6 +111,7 @@
         // 5. Se deu tudo certo, exibe a mensagem de sucesso e retorna os dados
         console.log('Sucesso:', resultado);
         alert(resultado.message); // Ex: "Reserva criada com sucesso!"
+        listar_slots();
         return resultado.booking;
 
       } catch (erro) {
