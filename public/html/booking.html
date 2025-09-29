@@ -56,10 +56,10 @@
       list.innerHTML = "";
       
       // Verifica se a requisição falhou (status não foi 2xx)
-      if (!resposta.ok) {
+      if (resultado == []) {
         // Exibe a mensagem de erro específica vinda da API
-        console.error('Erro da API:', resultado);
-        alert(`Não foi possível fazer achar a reserva: ${resultado.error}`); // Ex: "Não tem reserva."
+        // console.error('Erro da API:', resultado);
+        alert(`Ainda não temos reserva marcada`); // Ex: "Não tem reserva."
         return null;
       }
 
