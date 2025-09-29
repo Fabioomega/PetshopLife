@@ -51,10 +51,7 @@
 
       const resposta = await fetch(`/bookings/${id_do_usuario_reserva}`);
       const resultado = await resposta.json();
-      const list = document.getElementById("minha_reserva");
-      console.log('Elemento da lista:', list);
-      list.innerHTML = "";
-      
+
       // Verifica se a requisição falhou (status não foi 2xx)
       if (resultado == []) {
         // Exibe a mensagem de erro específica vinda da API
@@ -62,6 +59,11 @@
         alert(`Ainda não temos reserva marcada`); // Ex: "Não tem reserva."
         return null;
       }
+      
+      const list = document.getElementById("minha_reserva");
+      console.log('Elemento da lista:', list);
+      list.innerHTML = "";
+      
 
       resultado.forEach(reserva => {
         console.log('resultado ' + reserva);
