@@ -100,6 +100,15 @@ app.get('/', (req, resp) => {
     resp.sendFile(__dirname + '/public/html/user_selection.html');
 });
 
+// rota usuario
+app.get('/booking', (req, resp) => {
+    resp.sendFile(__dirname + '/public/html/booking.html');
+});
+
+// rota petshop
+app.get('/petshop', (req, resp) => {
+    resp.sendFile(__dirname + '/public/html/petshop.html');
+});
 
 app.listen(8080, function () {
     console.log("Servidor rodando na porta 8080...");

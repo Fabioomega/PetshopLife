@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Petshop</title>
+</head>
+<body>
+    
+    <h1>Criar slots</h1>
+    <input id="dia_da_semana" placeholder="Dia da semana">
+    <input id="horario" placeholder="Horario">
+    <input id="capacidade" placeholder="Capacidade">
+    <button onclick="criar_slots()">Criar slots</button>
+
+    <h1>Listar slots</h1>
+    <button onclick="listar_horarios()">Listar horários</button>
+    <ul id="slot-list"></ul>
+
+    <script>
+        async function criar_slots() {
+            const dia_da_semana = document.getElementById("dia_da_semana").value;
+            const horario = document.getElementById("horario").value;
+            const capacidade = document.getElementById("capacidade").value;
+            
+            // 1. Monta o objeto de dados com as chaves que o back-end espera
+            const dadosDoSlot = {
+                dayOfWeek: dia_da_semana,
+                time: horario,
+                capacity: capacidade
+            };
+
+            try {
+                // 2. Faz a requisição para a API
+                const resposta = await fetch('/slots', {
+                method: 'POST', // O método tem que ser POST
+                headers: {
+                    'Content-Type': 'application/json' // Avisa que estamos enviando JSON
+                },
+                body: JSON.stringify(dadosDoSlot) // Converte o objeto para texto JSON
+                });
+
+                // 3. Converte a resposta do servidor para JSON
+                const resultado = await resposta.json();
+
+                // 4. Verifica se a requisição foi bem-sucedida
+                if (!resposta.ok) {
+                // Se deu erro, exibe a mensagem de erro da API
+                console.error('Erro da API:', resultado);
+                alert(`Erro ao criar slot: ${resultado.error || 'Erro desconhecido'}`);
+                return null;
+                }
+
+                // 5. Se deu tudo certo, exibe a mensagem de sucesso e retorna os dados
+                console.log('Sucesso:', resultado);
+                alert(resultado.message); // Ex: "Slot criado com sucesso!"
+                return resultado.slot;
+
+            } catch (erro) {
+                // Captura erros de rede (ex: servidor fora do ar)
+                console.error('Erro na requisição fetch:', erro);
+                alert('Não foi possível conectar ao servidor.');
+                return null;
+            }
+        }
+
+        async function listar_horarios() {
+        const resp = await fetch("/slots");
+        const info = await resp.json();
+
+        // console.log('info' + info);
+
+        const list = document.getElementById("slot-list");
+        console.log('Elemento da lista:', list);
+        list.innerHTML = "";
+
+        Object.keys(info).forEach(dia_da_semana => {
+            
+            const slots = info[dia_da_semana];
+
+            slots.forEach(slot => { 
+
+            const li = document.createElement("li");
+            li.textContent = `${dia_da_semana} - ${slot.time} (capacidade: ${slot.capacity})`;
+            list.appendChild(li);
+            })
+        });
+        }
+    </script>
+
+</body>
+</html>
