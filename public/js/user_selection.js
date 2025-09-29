@@ -24,6 +24,17 @@ fetch("/users/list").then((response) => {
     });
 })
 
+function isEmpty(obj) {
+    for (const prop in obj) {
+        if (Object.hasOwn(obj, prop)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
 redirect_buton.addEventListener('click', () => {
     let current_user = {};
     const current_id = user_selection.value;
@@ -34,7 +45,7 @@ redirect_buton.addEventListener('click', () => {
         }
     }
 
-    if (current_user == {}) {
+    if (isEmpty(current_user)) {
         return;
     }
 
