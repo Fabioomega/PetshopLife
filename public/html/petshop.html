@@ -7,14 +7,35 @@
 <body>
     
     <h1>Criar slots</h1>
-    <input id="dia_da_semana" placeholder="Dia da semana">
-    <input id="horario" placeholder="Horario">
+    <!-- <label for="dia_da_semana">Dia da semana</label> -->
+    <select id="dia_da_semana">
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+    </select>
+    <select id="horario">
+        <option value="08:00">08:00</option>
+        <option value="09:00">09:00</option>
+        <option value="10:00">10:00</option>
+        <option value="11:00">11:00</option>
+        <option value="14:00">14:00</option>
+        <option value="15:00">15:00</option>
+        <option value="16:00">16:00</option>
+        <option value="17:00">17:00</option>
+    </select>
+    <!-- <input id="horario" placeholder="Horario"> -->
     <input id="capacidade" placeholder="Capacidade">
     <button onclick="criar_slots()">Criar slots</button>
 
     <h1>Listar slots</h1>
     <button onclick="listar_horarios()">Listar horários</button>
     <ul id="slot-list"></ul>
+
+    <h1>Listar bookings</h1>
+    <button onclick="listar_agendamentos()">Listar agentamentos</button>
+    <ul id="bookings-list"></ul>
 
     <script>
         async function criar_slots() {
@@ -85,6 +106,20 @@
             })
         });
         }
+
+        async function listar_agendamentos() {
+            const resp = await fetch("/bookings/list");
+            const info = await resp.json();
+
+            const list = document.getElementById("bookings-list");
+            list.innerHTML = "";
+
+            info.forEach(booking => {
+                const li = document.createElement("li");
+                li.textContent = `${booking.costumerName} (${booking.phone}): ${booking.dayOfWeek} - ${booking.time}`;
+                list.appendChild(li);
+            });
+            }
     </script>
 
 </body>
