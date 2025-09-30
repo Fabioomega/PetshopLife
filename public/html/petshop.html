@@ -3,6 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <title>Petshop</title>
+  <style>
+        /* Estilização básica para a tabela (opcional) */
+        .tabela-horarios {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: sans-serif;
+            margin-bottom: 20px;
+        }
+        .tabela-horarios th, .tabela-horarios td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .tabela-horarios thead {
+            background-color: #f2f2f2;
+        }
+        .tabela-horarios td:first-child {
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
     
@@ -29,8 +50,8 @@
     <input id="capacidade" placeholder="Capacidade">
     <button onclick="criar_slots()">Criar slots</button>
 
-    <h1>Listar slots</h1>
-    <button onclick="listar_horarios()">Listar horários</button>
+    <h1>Listar horários</h1>
+    <!-- <button onclick="listar_horarios()">Listar horários</button> -->
     <ul id="slot-list"></ul>
 
     <h1>Listar bookings</h1>
@@ -74,6 +95,7 @@
                 // 5. Se deu tudo certo, exibe a mensagem de sucesso e retorna os dados
                 console.log('Sucesso:', resultado);
                 alert(resultado.message); // Ex: "Slot criado com sucesso!"
+                listar_horarios();
                 return resultado.slot;
 
             } catch (erro) {
@@ -85,26 +107,29 @@
         }
 
         async function listar_horarios() {
-        const resp = await fetch("/slots");
-        const info = await resp.json();
+            const resp = await fetch("/slots");
+            const info = await resp.json();
 
-        // console.log('info' + info);
+            // console.log('info' + info);
 
-        const list = document.getElementById("slot-list");
-        console.log('Elemento da lista:', list);
-        list.innerHTML = "";
+            const list = document.getElementById("slot-list");
+            console.log('Elemento da lista:', list);
+            list.innerHTML = "";
 
-        Object.keys(info).forEach(dia_da_semana => {
-            
-            const slots = info[dia_da_semana];
+            table = criarTabelaDeCapacidade(info);
+            list.appendChild(table);
 
-            slots.forEach(slot => { 
+            // Object.keys(info).forEach(dia_da_semana => {
+                
+            //     const slots = info[dia_da_semana];
 
-            const li = document.createElement("li");
-            li.textContent = `${dia_da_semana} - ${slot.time} (capacidade: ${slot.capacity})`;
-            list.appendChild(li);
-            })
-        });
+            //     slots.forEach(slot => { 
+
+            //     const li = document.createElement("li");
+            //     li.textContent = `${dia_da_semana} - ${slot.time} (capacidade: ${slot.capacity})`;
+            //     list.appendChild(li);
+            //     })
+            // });
         }
 
         async function listar_agendamentos() {
@@ -120,6 +145,84 @@
                 list.appendChild(li);
             });
             }
+
+        /**
+         * Cria uma tabela HTML com base em dados JSON, mostrando a capacidade de cada horário.
+         * As colunas são os dias da semana e as linhas são os horários.
+         * @param {object} jsonData O objeto JSON com os dados dos agendamentos.
+         * @returns {HTMLTableElement} O elemento da tabela HTML criado.
+         */
+        function criarTabelaDeCapacidade(jsonData) {
+            // Define a ordem desejada para os dias da semana
+            const diasDaSemana = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+            // Coleta todos os horários únicos de todos os dias e os ordena
+            const todosOsHorarios = new Set();
+            for (const dia in jsonData) {
+                if (jsonData.hasOwnProperty(dia)) {
+                jsonData[dia].forEach(item => {
+                    todosOsHorarios.add(item.time);
+                });
+                }
+            }
+            const horariosOrdenados = Array.from(todosOsHorarios).sort();
+
+            // Cria o elemento da tabela e o cabeçalho
+            const table = document.createElement('table');
+            table.className = 'tabela-horarios'; // Reutilizando a mesma classe para estilização
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+
+            // Adiciona uma célula vazia para o canto superior esquerdo
+            const thVazio = document.createElement('th');
+            headerRow.appendChild(thVazio);
+
+            // Adiciona os cabeçalhos dos dias da semana
+            diasDaSemana.forEach(dia => {
+                const th = document.createElement('th');
+                th.textContent = dia;
+                headerRow.appendChild(th);
+            });
+
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Cria o corpo da tabela com os horários e a capacidade
+            const tbody = document.createElement('tbody');
+            horariosOrdenados.forEach(horario => {
+                const tr = document.createElement('tr');
+
+                // Adiciona a célula com o horário na primeira coluna
+                const tdHorario = document.createElement('td');
+                tdHorario.textContent = horario;
+                tr.appendChild(tdHorario);
+
+                // Itera sobre cada dia da semana para criar as células correspondentes
+                diasDaSemana.forEach(dia => {
+                const td = document.createElement('td');
+                const agendamento = jsonData[dia] ? jsonData[dia].find(item => item.time === horario) : null;
+
+                // *** INÍCIO DA MODIFICAÇÃO ***
+                // Se um agendamento for encontrado para este dia e horário,
+                // exibe o valor da sua capacidade na célula.
+                if (agendamento) {
+                    td.textContent = agendamento.capacity;
+                }
+                // Se nenhum agendamento for encontrado, a célula permanecerá vazia.
+                // *** FIM DA MODIFICAÇÃO ***
+
+                tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            });
+
+            table.appendChild(tbody);
+
+            return table;
+        }
+        
+        listar_horarios();
     </script>
 
 </body>
