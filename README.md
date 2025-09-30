@@ -25,7 +25,7 @@ npm install
 npm start
 ```
 
-- App disponível em: **http://localhost:8000/**
+- App disponível em: **http://localhost:8080/**
 
 ---
 
