@@ -1,9 +1,8 @@
 const id_do_usuario_element = document.getElementById("id_do_usuario");
 const dia_da_semana_reserva_element = document.getElementById("dia_da_semana_reserva");
 const horario_reserva_element = document.getElementById("horario_reserva");
-const id_do_usuario_reserva_element = document.getElementById("id_do_usuario_reserva");
 const list = document.getElementById("slot-list");
-
+const user = new Serializer('user').load();
 
 async function listar_slots() {
     const resp = await fetch("/slots");
@@ -26,7 +25,7 @@ async function listar_slots() {
 }
 
 async function minha_reserva() {
-    const id_do_usuario_reserva = id_do_usuario_reserva_element.value;
+    const id_do_usuario_reserva = user._id;
 
     const resposta = await fetch(`/bookings/${id_do_usuario_reserva}`);
     const resultado = await resposta.json();
@@ -54,7 +53,7 @@ async function minha_reserva() {
 }
 
 async function criar_reserva() {
-    const id_do_usuario = id_do_usuario_element.value;
+    const id_do_usuario = user._id;
     const dia_da_semana_reserva = dia_da_semana_reserva_element.value;
     const horario_reserva = horario_reserva_element.value;
 
