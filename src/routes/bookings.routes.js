@@ -8,8 +8,8 @@ const Slot = require('../model/slot');
 const User = require('../model/user');
 
 const normalizeTime = (t) => {
-  const [h, m] = String(t).split(":");
-  return `${String(h).padStart(2, "0")}:${String(m || "00").padStart(2, "0")}`;
+    const [h, m] = String(t).split(":");
+    return `${String(h).padStart(2, "0")}:${String(m || "00").padStart(2, "0")}`;
 };
 
 /**
@@ -91,14 +91,14 @@ router.post('/', async (req, resp) => {
         const { userId, dayOfWeek } = req.body;
         const time = normalizeTime(req.body.time);
         const campos = ['userId', 'dayOfWeek', 'time'];
-        
+
         const camposObrigatorios = [];
 
         for (let campo of campos) {
             if (!req.body[campo]) {
                 camposObrigatorios.push(campo);
             }
-            
+
         }
         if (camposObrigatorios.length > 0) {
             resp.status(400).json({ error: 'Existem campos obrigatórios não preenchidos.', camposObrigatorios });
@@ -140,16 +140,9 @@ router.post('/', async (req, resp) => {
     }
 });
 
-router.get('/:userId', async (req, resp) => {
+router.get('/list', async (req, resp) => {
     try {
-        const { userId } = req.params
-        const user = await User.findById(userId);
-        if (!user) {
-            resp.status(404).json({ error: 'Usuário não encontrado.' });
-            return;
-        }
-
-        const bookings = await Booking.find({ userId: userId }).populate('slotId', 'dayOfWeek time -_id').sort({ createdAt: -1 });
+        const bookings = await Booking.find({}).populate('slotId', 'dayOfWeek time -_id').sort({ createdAt: -1 });
 
         const resultado = bookings.map(booking => ({
             dayOfWeek: booking.slotId.dayOfWeek,
@@ -165,4 +158,29 @@ router.get('/:userId', async (req, resp) => {
     }
 });
 
+
+router.get('/:userId', async (req, resp) => {
+    try {
+        const { userId } = req.params
+        const user = await User.findById(userId);
+        if (!user) {
+            resp.status(404).json({ error: 'Usuário não encontrado.' });
+            return;
+        }
+
+        const bookings = await Booking.find({ userId: userId }).populate('slotId', 'dayOfWeek time phone -_id').sort({ createdAt: -1 });
+
+        const resultado = bookings.map(booking => ({
+            dayOfWeek: booking.slotId.dayOfWeek,
+            time: booking.slotId.time,
+            costumerName: booking.costumerName,
+            createdAt: booking.createdAt
+        }));
+
+        resp.status(200).json(resultado);
+    } catch (error) {
+        console.error(error);
+        resp.status(500).json({ error: 'Erro ao buscar as reservas.' });
+    }
+});
 module.exports = router;
