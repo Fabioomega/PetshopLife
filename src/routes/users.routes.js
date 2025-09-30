@@ -16,6 +16,12 @@ router.post('/', async (req, resp) => {
         return;
     }
 
+    let phone = req.body?.phone;
+    if (phone == undefined) {
+        resp.send(`Field not provided phone`);
+        return;
+    }
+
     let is_admin = false;
     if (req.body?.privilege == 'admin') {
         is_admin = true;

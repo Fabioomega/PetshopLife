@@ -10,7 +10,12 @@
 <body>
     <form action="/users" method="post">
         <label for="username">Name:</label>
-        <input id="username" name="username">
+        <input id="username" name="username" required>
+        <br>
+        <br>
+        <label for="phone">Phone:</label>
+        <input id="phone" name="phone" pattern="^[0-9]{9}$" required>
+        <br>
         <br>
         <label for="is_admin">Is admin:</label>
         <input id="is_admin" name="privilege" type="checkbox" value="admin">
