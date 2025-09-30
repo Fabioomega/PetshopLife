@@ -3,21 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <title>Bookings</title>
+  <style>
+        /* Estilização básica para a tabela (opcional) */
+        .tabela-horarios {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: sans-serif;
+        }
+        .tabela-horarios th, .tabela-horarios td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .tabela-horarios thead {
+            background-color: #f2f2f2;
+        }
+        .tabela-horarios td:first-child {
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
   <h1>Listar slots</h1>
-  <button onclick="listar_slots()">Listar slots(horários livres)</button>
+  <!-- <button onclick="listar_slots()">Listar slots(horários livres)</button> -->
   <ul id="slot-list"></ul>
+  <button onclick="criar_reservas_selecionadas()">Confirmar Reserva(s)</button>
+
 
   <h1>Listar minha reserva</h1>
   <button onclick="minha_reserva()">Listar minha(s) reserva(s)</button>
   <ul id="minha_reserva"></ul>
 
   
-  <h1>Criar reserva</h1>
+  <!-- <h1>Criar reserva</h1>
   <input id="dia_da_semana_reserva" placeholder="Dia da semana">
   <input id="horario_reserva" placeholder="Horario">
-  <button onclick="criar_reserva()">Reservar</button>
+  <button onclick="criar_reserva()">Reservar</button> -->
 
   <script src="../js/persistence.js"></script>
   <script src="../js/booking.js"></script>
