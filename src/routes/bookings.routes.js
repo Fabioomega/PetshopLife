@@ -142,12 +142,13 @@ router.post('/', async (req, resp) => {
 
 router.get('/list', async (req, resp) => {
     try {
-        const bookings = await Booking.find({}).populate('slotId', 'dayOfWeek time -_id').sort({ createdAt: -1 });
+        const bookings = await Booking.find({}).populate('slotId', 'dayOfWeek time -_id').populate('userId', 'phone -_id').sort({ createdAt: -1 });
 
         const resultado = bookings.map(booking => ({
             dayOfWeek: booking.slotId.dayOfWeek,
             time: booking.slotId.time,
             costumerName: booking.costumerName,
+            phone: booking.userId.phone,
             createdAt: booking.createdAt
         }));
 
