@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Petshop</title>
   <style>
-        /* Estilização básica para a tabela (opcional) */
+        /* Estilização básica para a tabela */
         .tabela-horarios {
             width: 100%;
             border-collapse: collapse;
@@ -17,18 +17,17 @@
             text-align: center;
         }
         .tabela-horarios thead {
-            background-color: #f2f2f2;
+            background-color: #B8abd4;
         }
         .tabela-horarios td:first-child {
             font-weight: bold;
-            background-color: #f9f9f9;
+            background-color: #B8abd4;
         }
     </style>
 </head>
 <body>
     
     <h1>Criar slots</h1>
-    <!-- <label for="dia_da_semana">Dia da semana</label> -->
     <select id="dia_da_semana">
         <option value="Monday">Monday</option>
         <option value="Tuesday">Tuesday</option>
@@ -46,12 +45,10 @@
         <option value="16:00">16:00</option>
         <option value="17:00">17:00</option>
     </select>
-    <!-- <input id="horario" placeholder="Horario"> -->
     <input id="capacidade" placeholder="Capacidade">
     <button onclick="criar_slots()">Criar slots</button>
 
     <h1>Listar horários</h1>
-    <!-- <button onclick="listar_horarios()">Listar horários</button> -->
     <ul id="slot-list"></ul>
 
     <h1>Listar bookings</h1>
@@ -110,26 +107,12 @@
             const resp = await fetch("/slots");
             const info = await resp.json();
 
-            // console.log('info' + info);
-
             const list = document.getElementById("slot-list");
             console.log('Elemento da lista:', list);
             list.innerHTML = "";
 
             table = criarTabelaDeCapacidade(info);
             list.appendChild(table);
-
-            // Object.keys(info).forEach(dia_da_semana => {
-                
-            //     const slots = info[dia_da_semana];
-
-            //     slots.forEach(slot => { 
-
-            //     const li = document.createElement("li");
-            //     li.textContent = `${dia_da_semana} - ${slot.time} (capacidade: ${slot.capacity})`;
-            //     list.appendChild(li);
-            //     })
-            // });
         }
 
         async function listar_agendamentos() {
@@ -144,7 +127,7 @@
                 li.textContent = `${booking.costumerName} (${booking.phone}): ${booking.dayOfWeek} - ${booking.time}`;
                 list.appendChild(li);
             });
-            }
+        }
 
         /**
          * Cria uma tabela HTML com base em dados JSON, mostrando a capacidade de cada horário.
