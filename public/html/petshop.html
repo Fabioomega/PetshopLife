@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="UTF-8">
-  <title>Petshop</title>
-  <style>
+    <meta charset="UTF-8">
+    <title>Petshop</title>
+    <style>
         /* Estilização básica para a tabela (opcional) */
         .tabela-horarios {
             width: 100%;
@@ -11,22 +12,27 @@
             font-family: sans-serif;
             margin-bottom: 20px;
         }
-        .tabela-horarios th, .tabela-horarios td {
+
+        .tabela-horarios th,
+        .tabela-horarios td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: center;
         }
+
         .tabela-horarios thead {
             background-color: #f2f2f2;
         }
+
         .tabela-horarios td:first-child {
             font-weight: bold;
             background-color: #f9f9f9;
         }
     </style>
 </head>
+
 <body>
-    
+
     <h1>Criar slots</h1>
     <!-- <label for="dia_da_semana">Dia da semana</label> -->
     <select id="dia_da_semana">
@@ -63,7 +69,7 @@
             const dia_da_semana = document.getElementById("dia_da_semana").value;
             const horario = document.getElementById("horario").value;
             const capacidade = document.getElementById("capacidade").value;
-            
+
             // 1. Monta o objeto de dados com as chaves que o back-end espera
             const dadosDoSlot = {
                 dayOfWeek: dia_da_semana,
@@ -74,11 +80,11 @@
             try {
                 // 2. Faz a requisição para a API
                 const resposta = await fetch('/slots', {
-                method: 'POST', // O método tem que ser POST
-                headers: {
-                    'Content-Type': 'application/json' // Avisa que estamos enviando JSON
-                },
-                body: JSON.stringify(dadosDoSlot) // Converte o objeto para texto JSON
+                    method: 'POST', // O método tem que ser POST
+                    headers: {
+                        'Content-Type': 'application/json' // Avisa que estamos enviando JSON
+                    },
+                    body: JSON.stringify(dadosDoSlot) // Converte o objeto para texto JSON
                 });
 
                 // 3. Converte a resposta do servidor para JSON
@@ -86,10 +92,10 @@
 
                 // 4. Verifica se a requisição foi bem-sucedida
                 if (!resposta.ok) {
-                // Se deu erro, exibe a mensagem de erro da API
-                console.error('Erro da API:', resultado);
-                alert(`Erro ao criar slot: ${resultado.error || 'Erro desconhecido'}`);
-                return null;
+                    // Se deu erro, exibe a mensagem de erro da API
+                    console.error('Erro da API:', resultado);
+                    alert(`Erro ao criar slot: ${resultado.error || 'Erro desconhecido'}`);
+                    return null;
                 }
 
                 // 5. Se deu tudo certo, exibe a mensagem de sucesso e retorna os dados
@@ -120,7 +126,7 @@
             list.appendChild(table);
 
             // Object.keys(info).forEach(dia_da_semana => {
-                
+
             //     const slots = info[dia_da_semana];
 
             //     slots.forEach(slot => { 
@@ -141,10 +147,10 @@
 
             info.forEach(booking => {
                 const li = document.createElement("li");
-                li.textContent = `${booking.costumerName} (${booking.phone}): ${booking.dayOfWeek} - ${booking.time}`;
+                li.textContent = `${booking.costumerName} (Tel: ${booking.phone}): ${booking.dayOfWeek} - ${booking.time}`;
                 list.appendChild(li);
             });
-            }
+        }
 
         /**
          * Cria uma tabela HTML com base em dados JSON, mostrando a capacidade de cada horário.
@@ -160,9 +166,9 @@
             const todosOsHorarios = new Set();
             for (const dia in jsonData) {
                 if (jsonData.hasOwnProperty(dia)) {
-                jsonData[dia].forEach(item => {
-                    todosOsHorarios.add(item.time);
-                });
+                    jsonData[dia].forEach(item => {
+                        todosOsHorarios.add(item.time);
+                    });
                 }
             }
             const horariosOrdenados = Array.from(todosOsHorarios).sort();
@@ -199,19 +205,19 @@
 
                 // Itera sobre cada dia da semana para criar as células correspondentes
                 diasDaSemana.forEach(dia => {
-                const td = document.createElement('td');
-                const agendamento = jsonData[dia] ? jsonData[dia].find(item => item.time === horario) : null;
+                    const td = document.createElement('td');
+                    const agendamento = jsonData[dia] ? jsonData[dia].find(item => item.time === horario) : null;
 
-                // *** INÍCIO DA MODIFICAÇÃO ***
-                // Se um agendamento for encontrado para este dia e horário,
-                // exibe o valor da sua capacidade na célula.
-                if (agendamento) {
-                    td.textContent = agendamento.capacity;
-                }
-                // Se nenhum agendamento for encontrado, a célula permanecerá vazia.
-                // *** FIM DA MODIFICAÇÃO ***
+                    // *** INÍCIO DA MODIFICAÇÃO ***
+                    // Se um agendamento for encontrado para este dia e horário,
+                    // exibe o valor da sua capacidade na célula.
+                    if (agendamento) {
+                        td.textContent = agendamento.capacity;
+                    }
+                    // Se nenhum agendamento for encontrado, a célula permanecerá vazia.
+                    // *** FIM DA MODIFICAÇÃO ***
 
-                tr.appendChild(td);
+                    tr.appendChild(td);
                 });
 
                 tbody.appendChild(tr);
@@ -221,9 +227,10 @@
 
             return table;
         }
-        
+
         listar_horarios();
     </script>
 
 </body>
+
 </html>
