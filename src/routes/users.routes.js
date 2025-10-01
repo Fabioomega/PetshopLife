@@ -27,7 +27,7 @@ router.post('/', async (req, resp) => {
         is_admin = true;
     }
 
-    let user = new User({ username: username, is_admin: is_admin });
+    let user = new User({ username: username, is_admin: is_admin, phone: phone });
     await user.save();
 
     resp.send('Ok');
